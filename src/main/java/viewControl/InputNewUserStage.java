@@ -13,32 +13,30 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.io.InputStream;
-
 public class InputNewUserStage extends BaseScreen{
-    private Button signIn;
-    private Button signUp;
-    private Button exit;
+    private final Button signIn;
+    private final Button signUp;
+    private final Button exit;
     private Client client;
     private User user;
-    private TextField loginInput;
-    private TextField passwordInput;
-    private TextField nameInput;
-    private TextField surnameInput;
-    private TextField secondNameInput;
-    private Label loginLabel;
-    private Label passwordLabel;
-    private Label nameLabel;
-    private Label surnameLabel;
-    private Label secondNameLabel;
-    private GridPane table;
+    private final TextField loginInput;
+    private final TextField passwordInput;
+    private final TextField nameInput;
+    private final TextField surnameInput;
+    private final TextField secondNameInput;
+    private final Label loginLabel;
+    private final Label passwordLabel;
+    private final Label nameLabel;
+    private final Label surnameLabel;
+    private final Label secondNameLabel;
+    private final GridPane table;
     private final ImageView titleImage;
-    private VBox root;
-    private Button send;
-    private Button cancel;
+    private final VBox root;
+    private final Button send;
+    private final Button cancel;
+    private final Stage stage;
 
     public InputNewUserStage(Button signIn,Button signUp,Button exit){
         super();
@@ -73,12 +71,6 @@ public class InputNewUserStage extends BaseScreen{
         input.setOnMouseExited(mouseEvent -> input.setBackground(this.inputBackground));
         return input;
     } //Поле ввода
-    private Label setLabel(String text){
-        Label label=new Label(text);
-        label.setFont(this.font);
-        label.setTextFill(Color.WHITE);
-        return label;
-    } //Текст
     private ImageView setTitleImage(){
         ImageView title=new ImageView(new Image("/pictures/inputText.png"));
         title.setFitWidth(300);
@@ -112,7 +104,7 @@ public class InputNewUserStage extends BaseScreen{
             if(this.check()) {
                 client=new Client();
                 user = new User(loginInput.getText(), passwordInput.getText(), nameInput.getText(),
-                        surnameInput.getText(), secondNameInput.getText(), null, false);
+                        surnameInput.getText(), secondNameInput.getText(), null, false,false);
                 if (!client.signUp(user))
                 {
                     loginInput.setBackground(this.inputBackgroundWrong);
@@ -163,7 +155,7 @@ public class InputNewUserStage extends BaseScreen{
         return stage;
     } //Stage
     private boolean check(){
-        String text="";
+        String text;
         boolean flag=true;
         if(loginInput.getText().equals("")) {
             loginInput.setBackground(this.inputBackgroundWrong);
@@ -171,7 +163,7 @@ public class InputNewUserStage extends BaseScreen{
         }else{
             text = loginInput.getText();
             for (int i = 0; i < text.length(); i++)
-                if (!((text.charAt(i) >= 'A' && text.charAt(i) <= 'Z') || (text.charAt(i) >= 'a' && text.charAt(i) <= 'z')
+                if (!((text.charAt(i) >= 'А' && text.charAt(i) <= 'Я') || (text.charAt(i) >= 'а' && text.charAt(i) <= 'я')
                         || (text.charAt(i) >= '0' && text.charAt(i) <= '9'))) {
                     loginInput.setBackground(this.inputBackgroundWrong);
                     flag = false;
@@ -183,7 +175,7 @@ public class InputNewUserStage extends BaseScreen{
         }else{
             text = passwordInput.getText();
             for (int i = 0; i < text.length(); i++)
-                if (!((text.charAt(i) >= 'A' && text.charAt(i) <= 'Z') || (text.charAt(i) >= 'a' && text.charAt(i) <= 'z')
+                if (!((text.charAt(i) >= 'А' && text.charAt(i) <= 'Я') || (text.charAt(i) >= 'а' && text.charAt(i) <= 'я')
                         || (text.charAt(i) >= '0' && text.charAt(i) <= '9'))) {
                     passwordInput.setBackground(this.inputBackgroundWrong);
                     flag = false;
@@ -195,7 +187,7 @@ public class InputNewUserStage extends BaseScreen{
         }else {
             text = nameInput.getText();
             for (int i = 0; i < text.length(); i++)
-                if (!((text.charAt(i) >= 'A' && text.charAt(i) <= 'Z') || (text.charAt(i) >= 'a' && text.charAt(i) <= 'z'))) {
+                if (!((text.charAt(i) >= 'А' && text.charAt(i) <= 'Я') || (text.charAt(i) >= 'а' && text.charAt(i) <= 'я'))) {
                     nameInput.setBackground(this.inputBackgroundWrong);
                     flag = false;
                 }
@@ -206,7 +198,7 @@ public class InputNewUserStage extends BaseScreen{
         }else {
             text = surnameInput.getText();
             for (int i = 0; i < text.length(); i++)
-                if (!((text.charAt(i) >= 'A' && text.charAt(i) <= 'Z') || (text.charAt(i) >= 'a' && text.charAt(i) <= 'z'))) {
+                if (!((text.charAt(i) >= 'А' && text.charAt(i) <= 'Я') || (text.charAt(i) >= 'а' && text.charAt(i) <= 'я'))) {
                     surnameInput.setBackground(this.inputBackgroundWrong);
                     flag = false;
                 }
@@ -217,7 +209,7 @@ public class InputNewUserStage extends BaseScreen{
         }else {
             text = secondNameInput.getText();
             for (int i = 0; i < text.length(); i++)
-                if (!((text.charAt(i) >= 'A' && text.charAt(i) <= 'Z') || (text.charAt(i) >= 'a' && text.charAt(i) <= 'z'))) {
+                if (!((text.charAt(i) >= 'А' && text.charAt(i) <= 'Я') || (text.charAt(i) >= 'а' && text.charAt(i) <= 'я'))) {
                     secondNameInput.setBackground(this.inputBackgroundWrong);
                     flag = false;
                 }

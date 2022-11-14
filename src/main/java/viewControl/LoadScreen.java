@@ -13,6 +13,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class LoadScreen extends BaseScreen{
     private final Background eyeButtonClose;
     private final Background eyeButtonOpen;
@@ -24,20 +26,21 @@ public class LoadScreen extends BaseScreen{
     private final Background passwordBoxBackgroundWrong;
 
     private Client client;
-    private BorderPane loadScreenBorder;
-    private HBox passwordBox;
-    private HBox loginBox;
-    private VBox centerBorder;
-    private ImageView titleImage;
-    private TextField loginInput;
-    private TextField passwordInputVisiable;
-    private PasswordField passwordInput;
+    private final BorderPane loadScreenBorder;
+    private final HBox passwordBox;
+    private final HBox loginBox;
+    private final VBox centerBorder;
+    private final ImageView titleImage;
+    private final TextField loginInput;
+    private final TextField passwordInputVisiable;
+    private final PasswordField passwordInput;
     private Button eyeButton;
-    private Button exitButton;
-    private Button fullscreenButton;
-    private Button signIn;
-    private Button signUp;
-    private HBox signBox;
+    private final Button exitButton;
+    private final Button fullscreenButton;
+    private final Button signIn;
+    private final Button signUp;
+    private final HBox signBox;
+    private final Stage stage;
     public LoadScreen(){
         super();
 
@@ -50,9 +53,9 @@ public class LoadScreen extends BaseScreen{
         this.eyeButtonOpen=setEyeButtonOpen();
         this.eyeButtonClose=setEyeButtonClose();
         this.titleImage=setTitleImage();
-        this.loginInput=setInputField("","Login");
-        this.passwordInputVisiable=setInputField("","Password");
-        this.passwordInput=setPasswordField("Password");
+        this.loginInput=setInputField("Login");
+        this.passwordInputVisiable=setInputField("Password");
+        this.passwordInput=setPasswordField();
         this.loginBox=setLoginBox();
         this.eyeButton=setEyeButton();
         this.passwordBox=setPasswordBox();
@@ -81,8 +84,8 @@ public class LoadScreen extends BaseScreen{
         titleImage.setFitWidth(834);
         return titleImage;
     }//Создание заголовочной картинки
-    private TextField setInputField(String text,String  prompt){
-        TextField loginField=new TextField(text);
+    private TextField setInputField(String  prompt){
+        TextField loginField=new TextField("");
         loginField.setFont(this.font);
         loginField.setPromptText(prompt);
         loginField.setPrefSize(300,40);
@@ -90,9 +93,9 @@ public class LoadScreen extends BaseScreen{
         loginField.setBackground(new Background(new BackgroundFill(Color.WHITE,CornerRadii.EMPTY, Insets.EMPTY)));
         return loginField;
     } //Установка поля для ввода
-    private PasswordField setPasswordField(String  prompt){
+    private PasswordField setPasswordField(){
         PasswordField passwordField=new PasswordField();
-        passwordField.setPromptText(prompt);
+        passwordField.setPromptText("Password");
         passwordField.setPrefSize(300,40);
         passwordField.setMaxSize(300,40);
         passwordField.setBackground(new Background(new BackgroundFill(Color.WHITE,CornerRadii.EMPTY, Insets.EMPTY)));
@@ -202,12 +205,12 @@ public class LoadScreen extends BaseScreen{
         signIn.setTextFill(Color.WHITE);
         signIn.setOnAction(actionEvent -> {
             User user;
-            if(signIn.getText()=="Войти"){
+            if(Objects.equals(signIn.getText(), "Войти")){
                 client=new Client();
-                String password="";
+                String password;
                 if(eyeButton.getBackground().equals(this.eyeButtonOpen)) password=this.passwordInputVisiable.getText();
                 else password=this.passwordInput.getText();
-                user=new User(loginInput.getText(),password,null,null,null,null,false);
+                user=new User(loginInput.getText(),password,null,null,null,null,false,false);
                 user=client.signIn(user);
                 if(user==null) {
                     client.disconnect();
@@ -215,7 +218,8 @@ public class LoadScreen extends BaseScreen{
                     this.passwordBox.setBackground(this.passwordBoxBackgroundWrong);
                 }
                 else{
-                    WorkScreen workScreen=new WorkScreen(user);
+                    new WorkScreen(user);
+                    client.disconnect();
                     this.stage.close();
                 }
                 client.disconnect();
@@ -244,68 +248,60 @@ public class LoadScreen extends BaseScreen{
         return stage;
     } //Создание окна
     private Background setEyeButtonOpen(){
-        Background open=new Background((new BackgroundImage(new Image("/pictures/eyeOpen.png"),
+        return new Background((new BackgroundImage(new Image("/pictures/eyeOpen.png"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.DEFAULT,
                 new BackgroundSize(65, 30, false, false, true, false))));
-        return open;
     } //Фон кнопки eye (Пароль виден)
     private Background setEyeButtonClose(){
-        Background close=new Background((new BackgroundImage(new Image("/pictures/eyeClose.png"),
+        return new Background((new BackgroundImage(new Image("/pictures/eyeClose.png"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.DEFAULT,
                 new BackgroundSize(65, 30, false, false, true, false))));
-        return close;
     } //Фон кнопки eye (Пароль не виден)
     private Background setLoginBoxBackground(){
-        Background defaultBack=new Background((new BackgroundImage(new Image("/pictures/loginArea.png"),
+        return new Background((new BackgroundImage(new Image("/pictures/loginArea.png"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.DEFAULT,
                 new BackgroundSize(400, 60, false, false, false, false))));
-        return defaultBack;
     } //Фон логина
     private Background setLoginBoxBackgroundCursor(){
-        Background cursorBack=new Background((new BackgroundImage(new Image("/pictures/loginAreaCursor.png"),
+        return new Background((new BackgroundImage(new Image("/pictures/loginAreaCursor.png"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.DEFAULT,
                 new BackgroundSize(400, 60, false, false, false, false))));
-        return cursorBack;
     } //Фон логина (наведён курсор)
     private Background setLoginBoxBackgroundWrong(){
-        Background wrongBack=new Background((new BackgroundImage(new Image("/pictures/loginAreaWrong.png"),
+        return new Background((new BackgroundImage(new Image("/pictures/loginAreaWrong.png"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.DEFAULT,
                 new BackgroundSize(400, 60, false, false, false, false))));
-        return wrongBack;
     } //Фон логина (неправилный ввод)
     private Background setPasswordBoxBackground(){
-        Background defaultBack=new Background((new BackgroundImage(new Image("/pictures/passwordArea.png"),
+        return new Background((new BackgroundImage(new Image("/pictures/passwordArea.png"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.DEFAULT,
                 new BackgroundSize(400, 60, false, false, false, false))));
-        return defaultBack;
     } //Фон пароля
     private Background setPasswordBoxBackgroundCursor(){
-        Background cursorBack=new Background((new BackgroundImage(new Image("/pictures/passwordAreaCursor.png"),
+        return new Background((new BackgroundImage(new Image("/pictures/passwordAreaCursor.png"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.DEFAULT,
                 new BackgroundSize(400, 60, false, false, false, false))));
-        return cursorBack;
     } //Фон пароля (наведён курсор)
     private Background setPasswordBoxBackgroundWrong(){
-        Background wrongBack=new Background((new BackgroundImage(new Image("/pictures/passwordAreaWrong.png"),
+        return new Background((new BackgroundImage(new Image("/pictures/passwordAreaWrong.png"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.DEFAULT,
                 new BackgroundSize(400, 60, false, false, false, false))));
-        return wrongBack;
     } //Фон пароля (неправилный ввод)
     public Stage getStage(){
         return stage;

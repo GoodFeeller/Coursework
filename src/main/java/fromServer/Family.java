@@ -5,19 +5,18 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.List;
 
 @JsonAutoDetect
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Builder
-public class User {
-    private String login;
-    private String password;
+public class Family {
+    private int id;
     private String name;
-    private String surname;
-    private String secondName;
-    private Family family;
-    private boolean admin;
-    private boolean connected;
+    private double income;
+    private double expenditure;
+    private String creator;
+    private List<User> members;
 }

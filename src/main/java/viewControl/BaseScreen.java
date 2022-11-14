@@ -1,6 +1,9 @@
 package viewControl;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -21,7 +24,6 @@ public abstract class BaseScreen {
     protected final Background borderButtonBackgroundClicked;
     protected final Background borderButtonBackground;
     protected Font font;
-    protected Stage stage;
     protected BaseScreen(){
         this.mainBackground=setMainBackground();
         this.buttonBackground= setButtonBackground();
@@ -138,4 +140,21 @@ public abstract class BaseScreen {
         check.setTextFill(Color.WHITE);
         return check;
     }
+    protected TextField setInput(String text, String tooltip, boolean edit){
+        TextField input=new TextField(text);
+        input.setFont(this.font);
+        input.setTooltip(new Tooltip(tooltip));
+        input.setPrefSize(250,50);
+        input.setBackground(this.inputBackground);
+        input.setEditable(edit);
+        input.setOnMouseEntered(mouseEvent -> input.setBackground(this.inputBackgroundCursor));
+        input.setOnMouseExited(mouseEvent -> input.setBackground(this.inputBackground));
+        return input;
+    } //Поле ввода
+    protected Label setLabel(String text){
+        Label label=new Label(text);
+        label.setFont(this.font);
+        label.setTextFill(Color.WHITE);
+        return label;
+    } //Текст
 }
